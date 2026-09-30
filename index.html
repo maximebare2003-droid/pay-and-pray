@@ -1011,7 +1011,7 @@ function renderReglages(){
   h += `</div></div><div class="col">`;
 
   GROUPS.forEach((G,gi)=>{
-    h += `<section class="card o${gi+2}"><div class="cardhead"><h2>${G.name}</h2><span class="gtot" data-gt="${G.id}">${E(gsum(G.id))} / mois</span></div><p class="muted small" style="margin:-6px 0 14px">${G.hint}.</p>`;
+    h += `<section class="card o${gi+2}"><div class="cardhead"><h2>${G.name}</h2><span class="gtot" data-gt="${G.id}">${E(gsum(G.id))} / month</span></div><p class="muted small" style="margin:-6px 0 14px">${G.hint}.</p>`;
     d.categories.forEach((c,k)=>{ if(c.group!==G.id || c.archived) return;
       h += `<div class="setrow"><input type="text" data-k="${k}" data-f="cname" value="${esc(c.name)}" aria-label="Category name" ${ro}>
         <div class="eur"><input type="number" min="0" step="1" data-k="${k}" data-f="cbud" value="${c.budget||''}" placeholder="0" aria-label="Budget" ${ro}></div>
@@ -1037,7 +1037,7 @@ function renderReglages(){
     if(f==='cname') d.categories[k].name=inp.value;
     if(f==='cbud') d.categories[k].budget=Number(inp.value)||0;
     $('planBox').innerHTML = planHtml(d);
-    v.querySelectorAll('[data-gt]').forEach(el=>el.textContent=E(gsum(el.dataset.gt))+' / mois');
+    v.querySelectorAll('[data-gt]').forEach(el=>el.textContent=E(gsum(el.dataset.gt))+' / month');
   });
   v.querySelectorAll('button[data-f]').forEach(b=>b.onclick=()=>{
     const k=+b.dataset.k, f=b.dataset.f;
@@ -1142,6 +1142,7 @@ async function importJson(file){
     }
     importArmed=false;
     await backend.importAll(b);
+    draftSettings=null; render();
     toast('Backup imported: '+b.txs.length+' expenses');
   }catch(e){ toast('Import failed: '+(e.message||'unknown error')); }
 }
